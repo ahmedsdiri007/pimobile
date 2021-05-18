@@ -20,15 +20,20 @@
 package com.mycompany.gui;
 
 import com.codename1.components.FloatingHint;
+import com.codename1.components.InfiniteProgress;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
+import com.codename1.ui.Form;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.mycompany.gui.entities.User;
+import com.mycompany.gui.services.ServiceUser;
 
 /**
  * Sign in UI
@@ -36,10 +41,10 @@ import com.codename1.ui.util.Resources;
  * @author Shai Almog
  */
 public class SignInForm extends BaseForm {
-
+Form current=this;
     public SignInForm(Resources res) {
         super(new BorderLayout());
-        
+      
         if(!Display.getInstance().isTablet()) {
             BorderLayout bl = (BorderLayout)getLayout();
             bl.defineLandscapeSwap(BorderLayout.NORTH, BorderLayout.EAST);
@@ -48,7 +53,12 @@ public class SignInForm extends BaseForm {
         getTitleArea().setUIID("Container");
         setUIID("SignIn");
         
-        add(BorderLayout.NORTH, new Label(res.getImage("Logo.png"), "LogoLabel"));
+        
+     
+        
+        
+       
+        add(BorderLayout.NORTH, new Label(res.getImage("logoTabaani.png"), "LogoLabel"));
         
         TextField username = new TextField("", "Username", 20, TextField.ANY);
         TextField password = new TextField("", "Password", 20, TextField.PASSWORD);
@@ -56,6 +66,15 @@ public class SignInForm extends BaseForm {
         password.setSingleLineTextArea(false);
         Button signIn = new Button("Sign In");
         Button signUp = new Button("Sign Up");
+        
+        
+        //mdp de pass oublié
+        Button mp =new Button ("forgot  your password?", "CenterLabel");
+        
+     
+        
+        
+        
         signUp.addActionListener(e -> new SignUpForm(res).show());
         signUp.setUIID("Link");
         Label doneHaveAnAccount = new Label("Don't have an account?");
@@ -66,12 +85,44 @@ public class SignInForm extends BaseForm {
                 new FloatingHint(password),
                 createLineSeparator(),
                 signIn,
-                FlowLayout.encloseCenter(doneHaveAnAccount, signUp)
+                FlowLayout.encloseCenter(doneHaveAnAccount, signUp) ,mp
         );
         content.setScrollableY(true);
         add(BorderLayout.SOUTH, content);
         signIn.requestFocus();
-        signIn.addActionListener(e -> new NewsfeedForm(res).show());
-    }
-    
+        signIn.addActionListener((e) -> {         System.out.println("username="+username.getText()+"pass="+password.getText());
+if(new ServiceUser().signin(username.getText(), password.getText() , res))
+
+{      Dialog.show("Success","you are logged in","ok",null);
+          new  ProfileForm(res).show();
 }
+        
+        
+       /* try {
+            if( username.getText()== "" ||  password.getText() == "" ){
+                Dialog.show("Veuillez verifier les données","","Annuler","ok");}
+            else{
+                InfiniteProgress ip = new  InfiniteProgress();
+                final Dialog iDialog = ip.showInfiniteBlocking();
+                User u =new User (String.valueOf(username.getText()).toString(),String.valueOf(password.getText()).toString());
+       System.out.println("data user =="+u);
+        //ServiceUser.getInstance().register(u);
+        iDialog.dispose();
+        refreshTheme();
+            }
+        }
+        catch (Exception ex ){
+        ex.printStackTrace();}*/
+    });
+        
+        
+        
+ //MP oublie event
+ mp.addActionListener((e)->{
+     new ActivateForm(res).show();
+ });
+
+    }   
+ }
+    
+

@@ -51,11 +51,11 @@ import com.codename1.ui.util.Resources;
 public class NewsfeedForm extends BaseForm {
 
     public NewsfeedForm(Resources res) {
-        super("Newsfeed", BoxLayout.y());
+        super("", BoxLayout.y());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
         getTitleArea().setUIID("Container");
-        setTitle("Newsfeed");
+        setTitle("");
         getContentPane().setScrollVisible(false);
         
         super.addSideMenu(res);
@@ -65,8 +65,8 @@ public class NewsfeedForm extends BaseForm {
 
         Label spacer1 = new Label();
         Label spacer2 = new Label();
-        addTab(swipe, res.getImage("news-item.jpg"), spacer1, "15 Likes  ", "85 Comments", "Integer ut placerat purued non dignissim neque. ");
-        addTab(swipe, res.getImage("dog.jpg"), spacer2, "100 Likes  ", "66 Comments", "Dogs are cute: story at 11");
+        addTab(swipe, res.getImage("2.jpg"), spacer1, "15 Likes  ", "85 Comments", " ");
+        addTab(swipe, res.getImage("1.jpg"), spacer2, "100 Likes  ", "66 Comments", "");
                 
         swipe.setUIID("Container");
         swipe.getContentPane().setUIID("Container");
@@ -102,23 +102,24 @@ public class NewsfeedForm extends BaseForm {
                 rbs[ii].setSelected(true);
             }
         });
-        
+        //My Favorites
         Component.setSameSize(radioContainer, spacer1, spacer2);
         add(LayeredLayout.encloseIn(swipe, radioContainer));
         
         ButtonGroup barGroup = new ButtonGroup();
         RadioButton all = RadioButton.createToggle("All", barGroup);
         all.setUIID("SelectBar");
-        RadioButton featured = RadioButton.createToggle("Featured", barGroup);
+        RadioButton featured = RadioButton.createToggle("Hotels", barGroup);//My reservations
         featured.setUIID("SelectBar");
-        RadioButton popular = RadioButton.createToggle("Popular", barGroup);
+        RadioButton popular = RadioButton.createToggle("Restaurant", barGroup);//My My complaints
         popular.setUIID("SelectBar");
-        RadioButton myFavorite = RadioButton.createToggle("My Favorites", barGroup);
+        RadioButton myFavorite = RadioButton.createToggle("Transport", barGroup);
         myFavorite.setUIID("SelectBar");
+       
         Label arrow = new Label(res.getImage("news-tab-down-arrow.png"), "Container");
         
         add(LayeredLayout.encloseIn(
-                GridLayout.encloseIn(4, all, featured, popular, myFavorite),
+                GridLayout.encloseIn(4, all, featured, popular, myFavorite  ),
                 FlowLayout.encloseBottom(arrow)
         ));
         

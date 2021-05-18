@@ -22,6 +22,7 @@ package com.mycompany.gui;
 import com.codename1.components.FloatingHint;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
@@ -31,6 +32,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.util.Resources;
+import com.mycompany.gui.services.ServiceUser;
 
 /**
  * Signup UI
@@ -40,13 +42,17 @@ import com.codename1.ui.util.Resources;
 public class SignUpForm extends BaseForm {
 
     public SignUpForm(Resources res) {
-        super(new BorderLayout());
+         Container welcome = FlowLayout.encloseCenter(
+                    new Label("Welcome To Tabaani", "WelcomeWhite")
+            );
+         
+      //  super(new BorderLayout());
         Toolbar tb = new Toolbar(true);
         setToolbar(tb);
         tb.setUIID("Container");
         getTitleArea().setUIID("Container");
         Form previous = Display.getInstance().getCurrent();
-        tb.setBackCommand("", e -> previous.showBack());
+        tb.setBackCommand("", e ->previous.showBack());
         setUIID("SignIn");
                 
         TextField username = new TextField("", "Username", 20, TextField.ANY);
@@ -57,9 +63,9 @@ public class SignUpForm extends BaseForm {
         email.setSingleLineTextArea(false);
         password.setSingleLineTextArea(false);
         confirmPassword.setSingleLineTextArea(false);
-        Button next = new Button("Next");
+        Button next = new Button("SingUp");
         Button signIn = new Button("Sign In");
-        signIn.addActionListener(e -> previous.showBack());
+        signIn.addActionListener(e -> new  SignInForm(res).show());
         signIn.setUIID("Link");
         Label alreadHaveAnAccount = new Label("Already have an account?");
         
@@ -81,7 +87,17 @@ public class SignUpForm extends BaseForm {
                 FlowLayout.encloseCenter(alreadHaveAnAccount, signIn)
         ));
         next.requestFocus();
-        next.addActionListener(e -> new ActivateForm(res).show());
-    }
+        System.out.println("AAAAAAAAAAAAAAAAAA");
+        next.addActionListener(e ->{new ServiceUser().signup(username, email, password, confirmPassword, res);
+            System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBB");
+         Dialog.show("Success","account is saved","ok",null);
+          new  SignUpForm(res).show();
+    });
+    
+}
+    
+    
+    
+    
     
 }
